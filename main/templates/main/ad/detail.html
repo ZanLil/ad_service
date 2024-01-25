@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'main:index' %}">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ ad.header|truncatechars:50 }}</li>
+        </ol>
+    </nav>
+    <h1>{{ ad.header }}</h1>
+    <hr>
+    <h3>Категория: {{ ad.category }}</h3>
+    <br>
+    <div id="carouselExampleIndicators" class="carousel slide">
+        <div class="carousel-indicators">
+            {% for media_file in ad.media_files.all %}
+                <button type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide-to="{{ forloop.counter0 }}"
+                        {% if forloop.counter0 == 0 %}class="active"{% endif %}
+                        aria-current="true" aria-label="Slide {{ forloop.counter }}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            {% for media_file in ad.media_files.all %}
+                <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                    {% if media_file.return_file_name.lower == 'видео' %}
+                        <video controls class="d-block w-100">
+                            <source src="{{ media_file.file.url }}" type="video/mp4">
+                            Ваш браузер не поддерживает тег video.
+                        </video>
+                    {% elif media_file.return_file_name.lower == 'изображение' %}
+                        <img src="{{ media_file.file.url }}" class="d-block w-100" alt="...">
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        {% if ad.media_files.count > 1 %}
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        {% endif %}
+    </div>
+    <br>
+    <div style="font-size: 20px;">
+        {{ ad.body }}
+    </div>
+    <br>
+    {% if is_response_sent %}
+        Вы уже отправили отклик.
+    {% else %}
+        <a href="{% url 'main:send_response' ad.id %}" type="submit" class="btn btn-primary">Откликнуться</a>
+    {% endif %}
+    <br>
+    <br>
+{% endblock %}

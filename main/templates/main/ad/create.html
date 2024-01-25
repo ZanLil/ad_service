@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'main:index' %}">Главная</a></li>
+            <li class="breadcrumb-item"><a href="#">Мои объявления</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Создание объявления</li>
+        </ol>
+    </nav>
+    <h1>Создание объявления</h1>
+    <hr>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for f in ad_form %}
+            <div class="mb-3">
+                <label class="form-label">{{ f.label }}</label>
+                {{ f }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Создать</button>
+    </form>
+{% endblock %}

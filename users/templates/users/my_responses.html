@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'main:index' %}">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Мои отклики</li>
+        </ol>
+    </nav>
+    <h1>Мои отклики</h1>
+    <hr>
+    <div class="cards row">
+        {% for response in responses %}
+            <div class="col-lg-4 col-md-12 g-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Отклик на "{{ response.ad.header }}"</h5>
+                        <p class="card-text">{{ response.text }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Объявлений пока что нет.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
