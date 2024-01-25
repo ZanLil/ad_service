@@ -4,11 +4,12 @@ from django.conf import settings
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
 from main.forms import AdForm
 from main.models import Ad, MediaFile, Response
-from .forms import SignUpForm, UserAuthenticationForm, ConfirmationCodeForm, ResponseFilterForm
+from .forms import SignUpForm, UserAuthenticationForm, ConfirmationCodeForm, ResponseFilterForm, NewsletterForm
 from .models import User
 
 
@@ -166,3 +167,26 @@ def accept_response(request, ad_id):
         fail_silently=True,
     )
     return redirect('users:responses_on_my_ads')
+
+
+def newsletter(request):
+    """Функция-представление отправки новостной рассылки."""
+    if request.user.is_staff:
+        print(User.objects.all().values_list('email'))
+        if request.method == 'POST':
+            form = NewsletterForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                send_mail(
+                    cd['header'],
+                    cd['text'],
+                    settings.DEFAULT_FROM_EMAIL,
+                    User.objects.all().values_list('email', flat=True),
+                    fail_silently=True,
+                )
+                return redirect('users:newsletter')
+        else:
+            form = NewsletterForm()
+        context = {'form': form}
+        return render(request, 'users/newsletter.html', context)
+    raise Http404()

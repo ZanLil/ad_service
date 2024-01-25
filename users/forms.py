@@ -68,3 +68,13 @@ class ResponseFilterForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(ResponseFilterForm, self).__init__(*args, **kwargs)
         self.fields['ad'].queryset = Ad.objects.filter(author=user)
+
+
+class NewsletterForm(forms.Form):
+    """Форма новостной рассылки."""
+    header = forms.CharField(label='Заголовок', widget=forms.TextInput(attrs={
+        'class': 'form-control'
+    }))
+    text = forms.CharField(label='Текст', widget=forms.Textarea(attrs={
+        'class': 'form-control'
+    }))

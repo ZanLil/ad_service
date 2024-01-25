@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'main:index' %}">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Рассылка</li>
+        </ol>
+    </nav>
+    <h1>Рассылка</h1>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {% for f in form %}
+            <div class="mb-3">
+                <label class="form-label">{{ f.label }}</label>
+                {{ f }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+{% endblock %}

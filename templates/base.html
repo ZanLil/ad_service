@@ -34,6 +34,7 @@
                             {% if user.is_authenticated %}
                                 {% if user.is_staff %}
                                     <li><a class="dropdown-item" href="{% url 'admin:index' %}">Админ-панель</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'users:newsletter' %}">Рассылка</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

@@ -16,4 +16,5 @@ urlpatterns = [
     path('responses_on_my_ads/', views.responses_on_my_ads, name='responses_on_my_ads'),
     path('responses_on_my_ads/delete/<int:ad_id>/', views.delete_response, name='delete_response'),
     path('responses_on_my_ads/accept/<int:ad_id>/', views.accept_response, name='accept_response'),
+    path('newsletter/', views.newsletter, name='newsletter'),
 ]
